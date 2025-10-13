@@ -14,5 +14,6 @@ def main():
   
   print(f"Sorted array: {arr}")
   
+  print(f"Count: {quick_sort.get_stats()}")
   
 main()

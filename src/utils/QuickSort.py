@@ -37,6 +37,8 @@ class QuickSort:
     return j
   
   def sort(self, arr):
+    self.count = 0
+    
     if len(arr) <= 1:
       return arr
     
@@ -48,7 +50,12 @@ class QuickSort:
     if high <= low:
       return
     
+    self.count += 1
+    
     j = self._partition(arr, low, high)
     
     self._sort(arr, low, j - 1)
     self._sort(arr, j + 1, high)
+    
+  def get_stats(self):
+    return self.count
