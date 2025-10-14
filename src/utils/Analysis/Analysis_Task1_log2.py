@@ -73,8 +73,8 @@ def run_performance_test(sizes, num_tests=100):
     for size in sizes:
         print(f"Testing array size: {size}")
         
-        # Calculate depth based on 2 * log2 of list length
-        depth = int(2 * math.log2(size) + 5)
+        # Calculate depth based on log2 of list length
+        depth = int(math.log2(size))
         print(f"  Using depth: {depth} (log2 of {size})")
         
         test_cases = generate_test_data(size, num_tests)
@@ -163,7 +163,7 @@ def create_performance_graphs(results):
     plt.grid(True, alpha=0.3)
     
     plt.tight_layout()
-    plt.savefig('graphs/dynamicsort_2log2_depth.png', dpi=300, bbox_inches='tight')
+    plt.savefig('graphs/dynamicsort_log2_depth.png', dpi=300, bbox_inches='tight')
 
 def analyze_log2_depth():
     """Main analysis function"""
