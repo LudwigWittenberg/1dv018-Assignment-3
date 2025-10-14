@@ -1,4 +1,10 @@
-class QuickSort:    
+from src.utils.HeapSort import HeapSort
+
+class DynamicSort:
+  def __init__(self, max_depth):
+    # Need to find a formula to determine the best algorithm to use
+    self.max_depth = max_depth
+    
   def _partition(self, arr, low, high):        
     # QuickSort Partition
     i, j = low, high + 1
@@ -42,19 +48,27 @@ class QuickSort:
     
     low, high = 0, len(arr) - 1
     
-    self._sort(arr, low, high)
+    self._sort(arr, low, high, 0)
     
-  def _sort(self, arr, low, high):
+  def _sort(self, arr, low, high, depth):
     if high <= low:
       return
     
     self.count += 1
+
+    # Heap Sort Partition    
+    if depth > self.max_depth:      
+      heap_sort = HeapSort(arr[low:high + 1])
+      heap_sort.sort()
+      arr[low:high + 1] = heap_sort.height[1:]
+      
+      return
     
     # QuickSort Partition
     j = self._partition(arr, low, high)
     
-    self._sort(arr, low, j - 1)
-    self._sort(arr, j + 1, high)
+    self._sort(arr, low, j - 1, depth + 1)
+    self._sort(arr, j + 1, high, depth + 1)
     
   def get_stats(self):
     return self.count
