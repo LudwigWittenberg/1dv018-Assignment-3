@@ -53,3 +53,5 @@ När vi använder 2·log₂(N) hamnar värdet ungefär mitt emellan log₂(N) oc
 > Formel: max_depth = 2 * log2(N)
 
 ![DynamicSort vs Quicksort vs Heapsort (2*log2(N)-djup)](./graphs/dynamicsort_2log2_depth.png)
+
+LÄGG TILL NÅGOT OM WORST CASE

@@ -1,4 +1,4 @@
-from src.utils.HeapSort import HeapSort
+from src.utils.sort.HeapSort import HeapSort
 
 class DynamicSort:
   def __init__(self, max_depth):
