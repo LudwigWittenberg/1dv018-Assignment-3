@@ -7,20 +7,24 @@ class Graph:
     return len(self.list)
   
   def num_edges(self):
-    assert False, "Not implemented"
+    return NotImplementedError("Not implemented")
   
   def add_edge(self, node1, node2):
-    assert False, "Not implemented"
+    return NotImplementedError("Not implemented")
     
   def add_edge_with_weight(self, node1, node2, weight):
-    assert False, "Not implemented"
+    return NotImplementedError("Not implemented")
   
   def remove_edge(self, node1, node2):
-    assert False, "Not implemented"
+    return NotImplementedError("Not implemented")
   
   def degree(self, node):
-    assert False, "Not implemented"
+    return self.get_neighbors(node)
+    
+  def get_neighbors(self, node):
+    if self._valid_node(node):
+      return self.list[node]
   
   def _valid_node(self, node):
     return node >= 0 and node < self.num_nodes()
-  
+    
