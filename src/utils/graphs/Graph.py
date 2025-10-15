@@ -19,7 +19,7 @@ class Graph:
     return NotImplementedError("Not implemented")
   
   def degree(self, node):
-    return self.get_neighbors(node)
+    return len(self.get_neighbors(node))
     
   def get_neighbors(self, node):
     if self._valid_node(node):
@@ -29,9 +29,8 @@ class Graph:
     if self._valid_node(node):
       return self.list[node]
     
-  def get_node(self, node):
-    if self._valid_node(node):
-      return self.list[node]
+  def get_nodes(self):
+    return self.list
     
   def _valid_node(self, node):
     return node >= 0 and node < self.num_nodes()

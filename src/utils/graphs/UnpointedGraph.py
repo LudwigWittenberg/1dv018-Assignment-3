@@ -9,9 +9,9 @@ class UnpointedGraph(Graph):
     return sum([len(node) for node in self.list]) // 2
 
   def add_edge(self, node1, node2):
-    self.add_edge_default(node1, node2, 1)
+    self.add_edge_with_weight(node1, node2, 1)
         
-  def add_edge_default(self, node1, node2, weight):
+  def add_edge_with_weight(self, node1, node2, weight):
     if super()._valid_node(node1) and super()._valid_node(node2):
       # Check if the edge already exists
       if node2 not in self.list[node1]:
