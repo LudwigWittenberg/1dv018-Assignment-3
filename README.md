@@ -1,6 +1,33 @@
 # 1dv018 - Assignment 3
 
-INTRO
+We are tasked with implementing different tasks. This is the third assignment for the course 1DV018 at Linnaeus University.
+
+## Requirements
+
+- Python 3.8 or higher
+- Matplotlib
+
+## How to run
+
+1. Start by downloading all the requirements:
+
+```bash
+pip install -r requirements.txt
+```
+
+2. Run the project:
+
+```bash
+python main.py
+```
+
+3. To generate the graphs for task 5, run: ***(Optional)***
+
+```bash
+python MatPlot.py
+```
+
+## Analysis and Conclusions in Swedish
 
 ## Task 1 - Analysis
 
@@ -53,5 +80,3 @@ När vi använder 2·log₂(N) hamnar värdet ungefär mitt emellan log₂(N) oc
 > Formel: max_depth = 2 * log2(N)
 
 ![DynamicSort vs Quicksort vs Heapsort (2*log2(N)-djup)](./graphs/dynamicsort_2log2_depth.png)
-
-LÄGG TILL NÅGOT OM WORST CASE
