@@ -10,15 +10,15 @@ class DiEdge():
   def dst(self):
     return self.node2
   
-  def weight(self):
+  def get_weight(self):
     return self.weight
   
   def __repr__(self):
-    return f"DiEdge({self.node1}, {self.node2}, {self.weight})"
+    return f"DiEdge({self.src()}, {self.dst()}, {self.get_weight()})"
   
   def __lt__(self, other):
     return self.weight < other.weight
   
   def __repr__(self):
-    return f"DiEdge({self.node1}, {self.node2}, {self.weight})"
+    return f"DiEdge({self.src()}, {self.dst()}, {self.get_weight()})"
   
