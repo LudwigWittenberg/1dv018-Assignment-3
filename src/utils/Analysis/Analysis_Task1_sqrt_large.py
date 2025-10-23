@@ -7,34 +7,22 @@ from src.utils.sort.DynamicSort import DynamicSort
 from src.utils.sort.QuickSort import QuickSort
 from src.utils.sort.HeapSort import HeapSort
 
-def generate_worst_case_data(size, num_tests=20):
-    """Generate worst case test data for performance testing"""
+def generate_test_data(size, num_tests=50):
+    """Generate test data for performance testing"""
     test_cases = []
     
     for _ in range(num_tests):
-        sorted_asc = list(range(1, size + 1))
-        test_cases.append(sorted_asc.copy())
+        random_arr = [random.randint(1, 10000) for _ in range(size)]
+        test_cases.append(random_arr.copy())
         
-        sorted_desc = list(range(size, 0, -1))
-        test_cases.append(sorted_desc.copy())
+        sorted_arr = list(range(1, size + 1))
+        test_cases.append(sorted_arr.copy())
         
-        partially_sorted = list(range(1, size + 1))
-        for _ in range(size // 10):
-            i, j = random.randint(0, size-1), random.randint(0, size-1)
-            partially_sorted[i], partially_sorted[j] = partially_sorted[j], partially_sorted[i]
-        test_cases.append(partially_sorted.copy())
+        reverse_arr = list(range(size, 0, -1))
+        test_cases.append(reverse_arr.copy())
         
-        nearly_sorted = list(range(1, size + 1))
-        for _ in range(size // 20):
-            i, j = random.randint(0, size-1), random.randint(0, size-1)
-            nearly_sorted[i], nearly_sorted[j] = nearly_sorted[j], nearly_sorted[i]
-        test_cases.append(nearly_sorted.copy())
-        
-        duplicate_arr = [1] * (size // 2) + [2] * (size - size // 2)
+        duplicate_arr = [random.randint(1, 100) for _ in range(size)]
         test_cases.append(duplicate_arr.copy())
-        
-        pivot_worst = [size] + list(range(1, size))
-        test_cases.append(pivot_worst.copy())
     
     return test_cases
 
@@ -49,8 +37,8 @@ def benchmark_dynamicsort(arr, max_depth):
 def benchmark_quicksort(arr):
     """Benchmark QuickSort performance"""
     start_time = time.perf_counter()
-    quick_sort = QuickSort()
-    quick_sort.sort(arr.copy())
+    quicksort = QuickSort()
+    quicksort.sort(arr.copy())
     end_time = time.perf_counter()
     return (end_time - start_time) * 1000
 
@@ -62,8 +50,8 @@ def benchmark_heapsort(arr):
     end_time = time.perf_counter()
     return (end_time - start_time) * 1000
 
-def run_performance_test(sizes, depth_strategy, num_tests=15):
-    """Run performance tests for worst case scenarios with specified depth strategy"""
+def run_performance_test(sizes, depth_strategy, num_tests=25):
+    """Run performance tests for different array sizes"""
     results = {
         'sizes': [],
         'dynamicsort_avg': [],
@@ -73,7 +61,7 @@ def run_performance_test(sizes, depth_strategy, num_tests=15):
     }
     
     for size in sizes:
-        print(f"Testing array size: {size} (Worst Case Scenarios)")
+        print(f"Testing array size: {size}")
         
         if depth_strategy == 'sqrt':
             depth = int(math.sqrt(size))
@@ -84,7 +72,7 @@ def run_performance_test(sizes, depth_strategy, num_tests=15):
         
         print(f"  Using depth: {depth} ({depth_strategy} of {size})")
         
-        test_cases = generate_worst_case_data(size, num_tests)
+        test_cases = generate_test_data(size, num_tests)
         dynamicsort_times = []
         quicksort_times = []
         heapsort_times = []
@@ -93,31 +81,31 @@ def run_performance_test(sizes, depth_strategy, num_tests=15):
             dynamic_time = benchmark_dynamicsort(test_case, depth)
             dynamicsort_times.append(dynamic_time)
             
-            quick_time = benchmark_quicksort(test_case)
-            quicksort_times.append(quick_time)
+            quicksort_time = benchmark_quicksort(test_case)
+            quicksort_times.append(quicksort_time)
             
             heapsort_time = benchmark_heapsort(test_case)
             heapsort_times.append(heapsort_time)
         
         dynamic_avg = np.mean(dynamicsort_times)
-        quick_avg = np.mean(quicksort_times)
+        quicksort_avg = np.mean(quicksort_times)
         heapsort_avg = np.mean(heapsort_times)
         
         results['sizes'].append(size)
         results['dynamicsort_avg'].append(dynamic_avg)
-        results['quicksort_avg'].append(quick_avg)
+        results['quicksort_avg'].append(quicksort_avg)
         results['heapsort_avg'].append(heapsort_avg)
         results['depths'].append(depth)
         
         print(f"  DynamicSort: {dynamic_avg:.3f}ms")
-        print(f"  QuickSort: {quick_avg:.3f}ms")
+        print(f"  QuickSort: {quicksort_avg:.3f}ms")
         print(f"  HeapSort: {heapsort_avg:.3f}ms")
         print()
     
     return results
 
 def create_performance_graphs(results_sqrt, results_log2, results_2log2):
-    """Create comparison graphs for three depth strategies in worst case"""
+    """Create comparison graphs for three depth strategies"""
     
     plt.figure(figsize=(20, 6))
     
@@ -131,7 +119,7 @@ def create_performance_graphs(results_sqrt, results_log2, results_2log2):
              label='HeapSort', marker='^', linewidth=2, markersize=6)
     plt.xlabel('Array Size')
     plt.ylabel('Average Execution Time (milliseconds)')
-    plt.title('Worst Case: Depth = sqrt(n)')
+    plt.title('Depth = sqrt(n)')
     plt.legend()
     plt.grid(True, alpha=0.3)
     
@@ -145,7 +133,7 @@ def create_performance_graphs(results_sqrt, results_log2, results_2log2):
              label='HeapSort', marker='^', linewidth=2, markersize=6)
     plt.xlabel('Array Size')
     plt.ylabel('Average Execution Time (milliseconds)')
-    plt.title('Worst Case: Depth = log2(n)')
+    plt.title('Depth = log2(n)')
     plt.legend()
     plt.grid(True, alpha=0.3)
     
@@ -159,35 +147,34 @@ def create_performance_graphs(results_sqrt, results_log2, results_2log2):
              label='HeapSort', marker='^', linewidth=2, markersize=6)
     plt.xlabel('Array Size')
     plt.ylabel('Average Execution Time (milliseconds)')
-    plt.title('Worst Case: Depth = 2*log2(n)')
+    plt.title('Depth = 2*log2(n)')
     plt.legend()
     plt.grid(True, alpha=0.3)
     
     plt.tight_layout()
-    plt.savefig('graphs/worst_case_depth_strategies_large.png', dpi=300, bbox_inches='tight')
+    plt.savefig('graphs/dynamicsort_depth_strategies_large.png', dpi=300, bbox_inches='tight')
 
-def analyze_worst_case():
-    """Main analysis function comparing depth strategies in worst case on large arrays"""
-    print("=== Worst Case Performance Analysis (Large Arrays) ===")
-    print("Testing DynamicSort with three depth strategies vs QuickSort and HeapSort")
-    print("Worst cases: Sorted arrays, reverse sorted, partially sorted, nearly sorted, duplicates, bad pivots")
+def analyze_depth_strategies_large():
+    """Main analysis function comparing depth strategies on large arrays"""
+    print("=== DynamicSort Depth Strategies Comparison (Large Arrays) ===")
     print()
     
-    test_sizes = [100, 200, 300, 500, 750, 1000, 1500, 2000, 3000, 5000, 7500, 10000]
+    test_sizes = [100, 200, 300, 400, 500, 750, 1000, 1500, 2000, 3000, 5000, 7500, 10000]
     
     print("Testing sqrt depth strategy...")
-    results_sqrt = run_performance_test(test_sizes, 'sqrt', num_tests=12)
+    results_sqrt = run_performance_test(test_sizes, 'sqrt', num_tests=20)
     
     print("Testing log2 depth strategy...")
-    results_log2 = run_performance_test(test_sizes, 'log2', num_tests=12)
+    results_log2 = run_performance_test(test_sizes, 'log2', num_tests=20)
     
     print("Testing 2*log2 depth strategy...")
-    results_2log2 = run_performance_test(test_sizes, '2log2', num_tests=12)
+    results_2log2 = run_performance_test(test_sizes, '2log2', num_tests=20)
     
     print("Creating performance graphs...")
     create_performance_graphs(results_sqrt, results_log2, results_2log2)
     
-    print("\n=== SQRT DEPTH - WORST CASE ANALYSIS ===")
+    # Analysis summary for sqrt
+    print("\n=== SQRT DEPTH ANALYSIS ===")
     print("Array Size | Depth | DynamicSort | QuickSort | HeapSort | Winner")
     print("-" * 70)
     for i, size in enumerate(results_sqrt['sizes']):
@@ -198,7 +185,8 @@ def analyze_worst_case():
         winner = ['DynamicSort', 'QuickSort', 'HeapSort'][[dynamic_avg, quick_avg, heap_avg].index(min(dynamic_avg, quick_avg, heap_avg))]
         print(f"{size:10} | {depth:5} | {dynamic_avg:11.3f}ms | {quick_avg:9.3f}ms | {heap_avg:8.3f}ms | {winner}")
     
-    print("\n=== LOG2 DEPTH - WORST CASE ANALYSIS ===")
+    # Analysis summary for log2
+    print("\n=== LOG2 DEPTH ANALYSIS ===")
     print("Array Size | Depth | DynamicSort | QuickSort | HeapSort | Winner")
     print("-" * 70)
     for i, size in enumerate(results_log2['sizes']):
@@ -209,7 +197,8 @@ def analyze_worst_case():
         winner = ['DynamicSort', 'QuickSort', 'HeapSort'][[dynamic_avg, quick_avg, heap_avg].index(min(dynamic_avg, quick_avg, heap_avg))]
         print(f"{size:10} | {depth:5} | {dynamic_avg:11.3f}ms | {quick_avg:9.3f}ms | {heap_avg:8.3f}ms | {winner}")
     
-    print("\n=== 2*LOG2 DEPTH - WORST CASE ANALYSIS ===")
+    # Analysis summary for 2*log2
+    print("\n=== 2*LOG2 DEPTH ANALYSIS ===")
     print("Array Size | Depth | DynamicSort | QuickSort | HeapSort | Winner")
     print("-" * 70)
     for i, size in enumerate(results_2log2['sizes']):

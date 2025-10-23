@@ -2,8 +2,8 @@ import time
 import random
 import matplotlib.pyplot as plt
 import numpy as np
-from src.utils.HeapSort import HeapSort
-from src.utils.QuickSort import QuickSort
+from src.utils.sort.HeapSort import HeapSort
+from src.utils.sort.QuickSort import QuickSort
 
 def generate_test_data(size, num_tests=100):
     """Generate test data for performance testing"""

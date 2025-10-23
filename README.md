@@ -77,6 +77,29 @@ Här kan vi se att resultatet ger en tydligare jämförelse mellan DynamicSort o
 
 När vi använder 2·log₂(N) hamnar värdet ungefär mitt emellan log₂(N) och √N. Det verkar ge en bra balans mellan att inte byta för tidigt (vilket gör algoritmen långsammare) och att inte vänta för länge (vilket riskerar att Quicksort går för djupt). Därför bedömer jag att 2·log₂(N) är en mer lämplig gräns för att byta till Heapsort.
 
-> Formel: max_depth = 2 * log2(N)
+<!-- > Formel: max_depth = 2 * log2(N) -->
 
 ![DynamicSort vs Quicksort vs Heapsort (2*log2(N)-djup)](./graphs/dynamicsort_2log2_depth.png)
+
+### Slutsats
+
+Vi har nu testat flera olika formler för när DynamicSort ska byta från Quicksort till Heapsort. Den första idén var att använda roten ur listans längd som gräns för maxdjup, vilket visade sig fungera ganska bra för de liststorlekar vi testade.
+
+Om vi till exempel har en lista med 100 element får vi ett maxdjup på 10 med roten ur, medan log₂(100) är 6,64. Tittar vi på tiden så ser vi en tydlig skillnad: med roten ur tar det strax över 0,075 ms, medan log₂(n) tar ungefär 0,100 ms. Det tyder på att algoritmen sällan når maxdjupet och därför nästan aldrig hinner byta till Heapsort när vi använder roten ur.
+
+När vi testar med 2 × log₂(n) (vilket för 100 element ger ett maxdjup på cirka 20) märker vi att maxdjupet i praktiken aldrig uppnås. Det väcker frågan om vi kanske testar på för små listor för att verkligen se skillnaderna.
+
+![DynamicSort vs Quicksort vs Heapsort large arrays](./graphs/dynamicsort_depth_strategies_large.png)
+
+Vid tester på större listor ser vi att Heapsort är betydligt långsammare än både Quicksort och DynamicSort. Quicksort och DynamicSort ligger nästan exakt lika när roten ur används som formel, vilket antyder att maxdjupet sällan nås i detta fall. För log₂(n) ser vi däremot att prestandan är sämre, vilket tyder på att algoritmen faktiskt byter till Heapsort några gånger – och eftersom Heapsort är långsammare påverkar det total tiden negativt.
+Formeln 2 × log₂(n) hamnar, som väntat, mitt emellan dessa två fall – maxdjupet nås ibland, men inte lika ofta som vid log₂(n).
+
+√10 000 = 100
+log₂(10 000) = 13,28
+2 × log₂(10 000) = 26,57
+
+![DynamicSort vs Quicksort vs Heapsort worst case](./graphs/worst_case_depth_strategies_large.png)
+
+När vi tittar på Quicksorts worst case är den fortfarande snabbare än DynamicSort, vilket gör det svårt att dra några entydiga slutsatser. Men utifrån resultaten verkar det ändå rimligt att anta att ett maxdjup någonstans mellan roten ur och log₂(n) ger en bra balans.
+
+För en lista med 10 000 element skulle därför 2 × log₂(n) vara en rimlig kompromiss – mindre än roten ur, men mer än log₂(n).

@@ -23,14 +23,14 @@ class Graph:
     
   def get_neighbors(self, node):
     if self._valid_node(node):
-      return self.list[node]
+      return iter(self.list[node])
     
   def get_edges(self, node):
     if self._valid_node(node):
-      return self.list[node]
+      return iter(self.list[node])
     
   def get_nodes(self):
-    return self.list
+    return iter(self.list)
     
   def _valid_node(self, node):
     return node >= 0 and node < self.num_nodes()

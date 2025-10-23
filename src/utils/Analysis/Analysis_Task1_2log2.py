@@ -3,9 +3,9 @@ import random
 import matplotlib.pyplot as plt
 import numpy as np
 import math
-from src.utils.DynamicSort import DynamicSort
-from src.utils.QuickSort import QuickSort
-from src.utils.HeapSort import HeapSort
+from src.utils.sort.DynamicSort import DynamicSort
+from src.utils.sort.QuickSort import QuickSort
+from src.utils.sort.HeapSort import HeapSort
 
 def generate_test_data(size, num_tests=100):
     """Generate test data for performance testing"""
